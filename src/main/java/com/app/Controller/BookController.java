@@ -68,6 +68,15 @@ public class BookController
 		return "listAllBooks";
 	}
 	
+	@RequestMapping("/asdas")
+	private String timepass(Model model , @RequestParam(value="id", required=true) Integer id) 
+	{
+		System.out.println("inside delete" + id);
+		service.deleteBook(id);
+		model.addAttribute("books", service.listAllBooks());
+		return "listAllBooks";
+	}
+	
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/download")
 	private String download(Model model) 
