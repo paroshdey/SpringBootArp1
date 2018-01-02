@@ -14,10 +14,15 @@ import com.app.pojo.Book;
 import com.app.service.BookService;
 import  java.io.*;  
 import  java.sql.*;
+import java.text.SimpleDateFormat;
+
 import  org.apache.poi.hssf.usermodel.HSSFSheet;  
-import  org.apache.poi.hssf.usermodel.HSSFWorkbook; 
+import  org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import  org.apache.poi.hssf.usermodel.HSSFRow;
-import  org.apache.poi.hssf.usermodel.HSSFCell;  
+ 
 @Controller
 public class BookController 
 {
@@ -52,6 +57,7 @@ public class BookController
 	@RequestMapping("listAllBooks")
 	public String listAllBooks(Model model ) 
 	{
+		System.out.println("inside listAllBooks");
 		List<Book> books = new ArrayList<>();
 		books = service.listAllBooks();
 		System.out.println(books);
@@ -68,14 +74,7 @@ public class BookController
 		return "listAllBooks";
 	}
 	
-	@RequestMapping("/asdas")
-	private String timepass(Model model , @RequestParam(value="id", required=true) Integer id) 
-	{
-		System.out.println("inside delete" + id);
-		service.deleteBook(id);
-		model.addAttribute("books", service.listAllBooks());
-		return "listAllBooks";
-	}
+	
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/download")
@@ -85,13 +84,29 @@ public class BookController
 		
 		try
 		{
-			String filename="C://Users//A664161//Desktop//data.xls" ;
+			/*String filename="C://Users//Ace//Desktop//data.xls" ;*/
+			
+			String filename = new SimpleDateFormat("'C://Users//Ace//Desktop//'yyyy-MM-dd- HH-mm'.xls'").format(new java.util.Date());
 			HSSFWorkbook hwb=new HSSFWorkbook();
 			HSSFSheet sheet =  hwb.createSheet("new sheet");
 
+			 Font font = hwb.createFont();
+			    font.setFontHeightInPoints((short)10);
+			    font.setFontName("Courier New");
+			    font.setItalic(true);
+			    font.setStrikeout(false);
+			    font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+
+			    // Fonts are set into a style so create a new one to use.
+			    CellStyle style = hwb.createCellStyle();
+			    style.setFont(font);
 			HSSFRow rowhead=   sheet.createRow((short)0);
-			rowhead.createCell((short) 0).setCellValue("SNo");
-			rowhead.createCell((short) 1).setCellValue("Name");
+			Cell cell = rowhead.createCell(0);
+			cell.setCellValue("Serial Number");
+			cell.setCellStyle(style);
+			Cell cell2 = rowhead.createCell(1);
+			cell2.setCellValue("Name");
+			cell2.setCellStyle(style);
 
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/book", "root", "root");
@@ -120,10 +135,15 @@ public class BookController
 		
 			catch ( Exception ex ) 
 			{
-			    System.out.println(ex);
-
+			    model.addAttribute("error", "Something Went Wrong Please TRY AGAIN");
+			    return "listAllBooks";
 			}
 			
-		return "listAllBooks";
+		 System.out.println("after file ");
+		 
+		 model.addAttribute("success", "Your file has been downloaded At location C://Users//Ace//Desktop// with your current date and time name");
+		 model.addAttribute("books",  service.listAllBooks());
+		
+		 return "listAllBooks";
 	}
 }
