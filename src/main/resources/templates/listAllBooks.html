@@ -14,8 +14,23 @@
        		<td th:text="${books.name}">Title</td>
        		<td><a href="#" data-th-href="@{delete(id=${books.id},phase=confirm)}"><span>Delete</span></a></td>
   		 </tr>
-  		
+  			
+  	  		
    	</table>
+ </form>
+ 
+ <form action="download">
+ 
+ 	<table>
+ 	
+ 		<tr>
+ 			<td>
+ 			
+ 				<input type="submit" value="Download" />
+ 			</td>
+ 		
+ 		</tr>
+ 	</table>
  </form>
 </body>
 </html>

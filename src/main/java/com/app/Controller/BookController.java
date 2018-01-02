@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.pojo.Book;
 import com.app.service.BookService;
-
+import  java.io.*;  
+import  java.sql.*;
+import  org.apache.poi.hssf.usermodel.HSSFSheet;  
+import  org.apache.poi.hssf.usermodel.HSSFWorkbook; 
+import  org.apache.poi.hssf.usermodel.HSSFRow;
+import  org.apache.poi.hssf.usermodel.HSSFCell;  
 @Controller
 public class BookController 
 {
@@ -63,5 +68,53 @@ public class BookController
 		return "listAllBooks";
 	}
 	
-	
+	@SuppressWarnings("deprecation")
+	@RequestMapping("/download")
+	private String download(Model model) 
+	{
+		System.out.println("inside download");
+		
+		try
+		{
+			String filename="C://Users//A664161//Desktop//data.xls" ;
+			HSSFWorkbook hwb=new HSSFWorkbook();
+			HSSFSheet sheet =  hwb.createSheet("new sheet");
+
+			HSSFRow rowhead=   sheet.createRow((short)0);
+			rowhead.createCell((short) 0).setCellValue("SNo");
+			rowhead.createCell((short) 1).setCellValue("Name");
+
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/book", "root", "root");
+			Statement st=con.createStatement();
+			ResultSet rs=st.executeQuery("Select * from book");
+			int i=1;
+			
+			System.out.println(rs);
+			
+			
+			while(rs.next())
+			{
+				System.out.println(i);
+				HSSFRow row=   sheet.createRow((short)i);
+				row.createCell((short) 0).setCellValue(Integer.toString(rs.getInt("id")));
+				row.createCell((short) 1).setCellValue(rs.getString("name"));
+				i++;
+			}
+			
+			FileOutputStream fileOut =  new FileOutputStream(filename);
+			hwb.write(fileOut);
+			fileOut.close();
+			System.out.println("Your excel file has been generated!");
+
+			}
+		
+			catch ( Exception ex ) 
+			{
+			    System.out.println(ex);
+
+			}
+			
+		return "listAllBooks";
+	}
 }
