@@ -15,6 +15,7 @@
 	 	    <td th:text='${books.id}'>Id</td>
        		<td th:text="${books.name}">Title</td>
        		<td><a href="#" data-th-href="@{delete(id=${books.id},phase=confirm)}"><span>Delete</span></a></td>
+       		<td><a href="#" data-th-href="@{update(id=${books.id},phase=confirm)}"><span>Update</span></a></td>
   		 </tr>
   			
   	  		

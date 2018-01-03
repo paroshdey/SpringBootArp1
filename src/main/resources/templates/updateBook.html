@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<form action="#" th:action="@{/update}" th:object="${book}" method="post">
+	
+		<!-- <label>	ID	</label>
+		<input type="text" th:value='${session.book.id}' />
+	
+		<label>	Name</label>
+		<input type="text" th:value="${session.book.name}" />
+		
+		<input type="submit" value="Update" />
+		<a href="#" data-th-href="@{update(book=${book},phase=confirm)}"><span>Delete</span></a> -->
+	
+	
+	
+		<input type="text" th:field="*{id}" />
+		<input type="text" th:field="*{name}" />
+  		<input type="submit" value="Update"/>
+	
+	
+	</form>
+	
+</body>
+</html>
+
+<!-- 
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+	
+	 <form action="#" th:action="@{/update}" th:object="${book}" method="post">
+    	<p>Id: <input type="text" th:field="*{id}" /></p>
+        <p>Message: <input type="text" th:field="*{name}" /></p>
+        <p><input type="submit" value="Submit" /> 
+    </form>
+	
+</body>
+</html> -->

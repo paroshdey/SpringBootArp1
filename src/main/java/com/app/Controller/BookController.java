@@ -3,9 +3,12 @@ package com.app.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +35,6 @@ public class BookController
 	@RequestMapping("/register")
 	public String register()
 	{
-		System.out.println("inside register");
 		return "register";
 	}
 	
@@ -40,41 +42,52 @@ public class BookController
 	public String register(@RequestParam("Name")String Name,  Model model , Book book)
 	{
 		book.setName(Name);
-		System.out.println("inside register" + book);
 		service.save(book);
-		System.out.println("after save");
 		model.addAttribute("books", service.listAllBooks());
 		return "listAllBooks";
 		
 	}
 	
-	@RequestMapping("/saveBook")
-	public String saveBook()
-	{
-		service.save(new Book("asd"));
-		return "bookSave";
-	}
 	@RequestMapping("listAllBooks")
 	public String listAllBooks(Model model ) 
 	{
-		System.out.println("inside listAllBooks");
-		List<Book> books = new ArrayList<>();
-		books = service.listAllBooks();
-		System.out.println(books);
-		model.addAttribute("books", books);
+		model.addAttribute("books", service.listAllBooks());
 		return "listAllBooks";
 	}
 	
 	@RequestMapping("/delete")
 	private String deleteBook(Model model , @RequestParam(value="id", required=true) Integer id) 
 	{
-		System.out.println("inside delete" + id);
 		service.deleteBook(id);
 		model.addAttribute("books", service.listAllBooks());
 		return "listAllBooks";
 	}
 	
 	
+	@RequestMapping("/update")
+	private String updateBook(Model model , @RequestParam(value="id", required=true) Integer id ) 
+	{
+		System.out.println("inside delete" + id);
+		Book book = service.findBook(id);
+		
+		if (book != null) 
+		{
+			model.addAttribute("book" , book);
+			
+			return "updateBook";
+		}
+		model.addAttribute("books", service.listAllBooks());
+		return "listAllBooks";
+	}
+	
+	@RequestMapping(value = "/update" ,  method = RequestMethod.POST )
+	private String updateBook(@ModelAttribute(value="book") Book book , Model model ) 
+	{
+		System.out.println(book);
+		service.updateBook(book);
+		model.addAttribute("books", service.listAllBooks());
+		return "listAllBooks";
+	}
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/download")
@@ -86,7 +99,7 @@ public class BookController
 		{
 			/*String filename="C://Users//Ace//Desktop//data.xls" ;*/
 			
-			String filename = new SimpleDateFormat("'C://Users//Ace//Desktop//'yyyy-MM-dd- HH-mm'.xls'").format(new java.util.Date());
+			String filename = new SimpleDateFormat("'C://Users//A664161//'yyyy-MM-dd- HH-mm'.xls'").format(new java.util.Date());
 			HSSFWorkbook hwb=new HSSFWorkbook();
 			HSSFSheet sheet =  hwb.createSheet("new sheet");
 
@@ -97,9 +110,9 @@ public class BookController
 			    font.setStrikeout(false);
 			    font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 
-			    // Fonts are set into a style so create a new one to use.
-			    CellStyle style = hwb.createCellStyle();
-			    style.setFont(font);
+		    // Fonts are set into a style so create a new one to use.
+		    CellStyle style = hwb.createCellStyle();
+		    style.setFont(font);
 			HSSFRow rowhead=   sheet.createRow((short)0);
 			Cell cell = rowhead.createCell(0);
 			cell.setCellValue("Serial Number");
@@ -136,6 +149,7 @@ public class BookController
 			catch ( Exception ex ) 
 			{
 			    model.addAttribute("error", "Something Went Wrong Please TRY AGAIN");
+			    model.addAttribute("books",  service.listAllBooks());
 			    return "listAllBooks";
 			}
 			
