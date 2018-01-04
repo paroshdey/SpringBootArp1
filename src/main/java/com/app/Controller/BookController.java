@@ -32,6 +32,13 @@ public class BookController
 	@Autowired
 	private BookService service ;
 
+	
+	@RequestMapping("/")
+	public String index()
+	{
+		return "index";
+	}
+	
 	@RequestMapping("/register")
 	public String register()
 	{
