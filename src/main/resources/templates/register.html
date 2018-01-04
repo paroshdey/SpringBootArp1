@@ -1,16 +1,3 @@
-<!-- 
-
-<form method="POST" >
- 	 <div class="container">
-    <label><b>Book Nasm</b></label>
-    <input type="text" placeholder="Enter Username" name="Name" required="required" ></input>
-	</div>
-    <button type="submit">Login</button>
-   
-</form>
-</body>
-</html>
- -->
 
  <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
@@ -22,56 +9,34 @@
   <link rel="stylesheet" href="css/register.css" />
 
 
-<script th:inline="javascript">
-	console.log("inside script");
-	function formValidation()
-	{
-		var Email = document.forms["myform"]["Email"].value;
-		var password = document.forms["myform"]["password"].value;
-		console.log(Email);
-		console.log(password.length);
-		
-		  if(Email == "")
-			{
-				alert("Please Enter Name");
-				return false;
-			} 
-		 
-		  if (password.length <= 8 )
-			  {
-			  alert("incorrect");
-			  return false;
-			  }
-	
-		else
-			return true;
-	}
-</script> 
-  
 </head>
 
 <body>
 
   	
-
-<form method="post" onSubmit="return formValidation();" name="myform">
+	<div class="navbar-header">
+		<div class="navbar-brand">
+			<a href="/"><h1 style="color:white;">Home</h1></a>
+		</div>
+	</div>
+<br /><br /><br />
+<form method="post" th:object="${book}">
   <h2>Sign Up</h2>
-		<p>
+  <h3 th:text="${error}"></h3>
+  		<p>
+			<label th:for="name" class="floatLabel">Name</label>
+			<input type="text" th:field="*{name}"/>
+			<span th:errors="*{name}"></span>
+		</p>
+		
+		<!-- <p>
 			<label for="Email" class="floatLabel">Email</label>
 			<input id="Email" name="Email" type="text" />
-		</p>
-		 <p>
-			<label for="password" class="floatLabel">Password</label>
-			<input id="password" name="password" type="password" />
-			<span>Enter a password longer than 8 characters</span>
-		</p>
-		<!-- <p>
-			<label for="confirm_password" class="floatLabel">Confirm Password</label>
-			<input id="confirm_password" name="confirm_password" type="password" />
-			<span>Your passwords do not match</span>
-		</p>  -->
+		</p> -->
+		
+	
 		<p>
-			<input type="submit" value="Create My Account" id="submit" />
+			<input type="submit" value="Add" id="submit" />
 		</p>
 	</form>
   

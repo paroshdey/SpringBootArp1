@@ -1,24 +1,19 @@
 package com.app.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.app.pojo.Book;
 import com.app.service.BookService;
 import  java.io.*;  
 import  java.sql.*;
 import java.text.SimpleDateFormat;
-
 import  org.apache.poi.hssf.usermodel.HSSFSheet;  
 import  org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -40,15 +35,20 @@ public class BookController
 	}
 	
 	@RequestMapping("/register")
-	public String register()
+	public String register(Model model)
 	{
+		model.addAttribute("book",new Book());
 		return "register";
 	}
 	
 	@RequestMapping(value = "/register" , method=RequestMethod.POST )
-	public String register(@RequestParam("Name")String Name,  Model model , Book book)
+	public String register( Model model , @ModelAttribute @Valid Book book , Errors errors)
 	{
-		book.setName(Name);
+		if(errors.hasErrors())
+		{
+			model.addAttribute("error", "Something went wrong ,Please read error message");
+			return "register";
+		}
 		service.save(book);
 		model.addAttribute("books", service.listAllBooks());
 		return "listAllBooks";
@@ -106,7 +106,7 @@ public class BookController
 		{
 			/*String filename="C://Users//Ace//Desktop//data.xls" ;*/
 			
-			String filename = new SimpleDateFormat("'C://Users//A664161//'yyyy-MM-dd- HH-mm'.xls'").format(new java.util.Date());
+			String filename = new SimpleDateFormat("'C://Users//Ace//Desktop//'yyyy-MM-dd- HH-mm'.xls'").format(new java.util.Date());
 			HSSFWorkbook hwb=new HSSFWorkbook();
 			HSSFSheet sheet =  hwb.createSheet("new sheet");
 

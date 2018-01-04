@@ -2,20 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1"></meta>
-<title>Insert title here</title>
+	<title>Insert title here</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<script type="text/javascript" src="/js/bootstrap.min.js" ></script>
+    <script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
+
 </head>
 <body>
 	
+	<div class="navbar-header">
+		<div class="navbar-brand">
+			<a href="/"><h2>Home</h2></a>
+		</div>
+	</div>
+	<br /><br /><br />
 	<h1 th:text='${error}'></h1>
 	<h1 th:text='${success}'></h1>
 	<form action="delete">
-		<table>
+		<table class="table">
+		 <tr>
+	        <th>Id</th>
+	        <th>Name</th>
+        </tr>
 		
 		 <tr th:each="books : ${books}">
 	 	    <td th:text='${books.id}'>Id</td>
        		<td th:text="${books.name}">Title</td>
-       		<td><a href="#" data-th-href="@{delete(id=${books.id},phase=confirm)}"><span>Delete</span></a></td>
-       		<td><a href="#" data-th-href="@{update(id=${books.id},phase=confirm)}"><span>Update</span></a></td>
+       		<td><a href="#" data-th-href="@{delete(id=${books.id},phase=confirm)}"><span class="glyphicon glyphicon-remove"></span></a></td>
+       		<td><a href="#" data-th-href="@{update(id=${books.id},phase=confirm)}"><span class="glyphicon glyphicon-pencil"></span></a></td>
   		 </tr>
   			
   	  		
@@ -28,7 +42,7 @@
  		<tr>
  			<td>
  			
- 				<input type="submit" value="Download" />
+ 				<input type="submit" value="Downlaod File"  class="btn btn-primary btn-lg"/> 
  			</td>
  		
  		</tr>
@@ -36,3 +50,76 @@
  </form>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+ 
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+ 
+   <link href="css/bootstrap.min.css" rel="stylesheet" />
+   <script type="text/javascript" src="/js/bootstrap.min.js" ></script>
+   <script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Contextual Classes</h2>
+  <p>Contextual classes can be used to color table rows or table cells. The classes that can be used are: .active, .success, .info, .warning, and .danger.</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Default</td>
+        <td>Defaultson</td>
+        <td>def@somemail.com</td>
+      </tr>      
+      <tr class="success">
+        <td>Success</td>
+        <td>Doe</td>
+        <td>john@example.com</td>
+      </tr>
+      <tr class="danger">
+        <td>Danger</td>
+        <td>Moe</td>
+        <td>mary@example.com</td>
+      </tr>
+      <tr class="info">
+        <td>Info</td>
+        <td>Dooley</td>
+        <td>july@example.com</td>
+      </tr>
+      <tr class="warning">
+        <td>Warning</td>
+        <td>Refs</td>
+        <td>bo@example.com</td>
+      </tr>
+      <tr class="active">
+        <td>Active</td>
+        <td>Activeson</td>
+        <td>act@example.com</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html> -->
